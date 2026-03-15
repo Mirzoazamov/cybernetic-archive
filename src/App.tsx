@@ -1,27 +1,39 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Index from "./pages/Index.tsx";
-import NotFound from "./pages/NotFound.tsx";
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+// QueryClientni bir marta yaratib olamiz
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false, // Xatolik bo'lsa qayta-qayta so'rov yubormaslik uchun
+    },
+  },
+});
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        {/* HashRouter GitHub Pages uchun eng xavfsiz tanlov */}
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            {/* Agar kelajakda boshqa sahifalar qo'shsangiz, ularni shu yerga yozasiz */}
+            
+            {/* Noma'lum sahifalar uchun Catch-all route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </HashRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
