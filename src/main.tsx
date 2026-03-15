@@ -1,6 +1,5 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 
@@ -10,10 +9,9 @@ if (!rootElement) {
   throw new Error("Root element not found");
 }
 
+// Routerni bu yerdan olib tashladik, chunki u App.tsx ichida bor
 createRoot(rootElement).render(
   <React.StrictMode>
-    <BrowserRouter basename="/cybernetic-archive">
-      <App />
-    </BrowserRouter>
+    <App />
   </React.StrictMode>
 );
